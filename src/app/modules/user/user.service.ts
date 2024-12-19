@@ -7,13 +7,18 @@ const createUserForDb = async (playood: TUser) => {
   if (isUserExits) {
     throw new Error("user already exits for db");
   }
-  const result = await User.create(playood);
+  const createUser = await User.create(playood);
+  const result = await User.findOne({ email: playood.email }).select(
+    "email name"
+  );
   return result;
 };
 
 const loginUserForDb = async (playood: Partial<TUser>) => {
   //check user
-  const isUserExits = await User.findOne({ email: playood.email });
+  const isUserExits = await User.findOne({ email: playood.email }).select(
+    "+password"
+  );
 
   if (!isUserExits) {
     throw new Error("user is not found for db");
@@ -32,11 +37,27 @@ const loginUserForDb = async (playood: Partial<TUser>) => {
   if (!comperPassword) {
     throw new Error("invilid email and password please try agin");
   }
-  console.log(isUserExits);
-  return isUserExits;
+  const result = await User.findOne({ email: playood.email }).select(
+    "email name"
+  );
+  return result;
+};
+
+const getSingleUserForDb = async (id: string) => {
+  const result = await User.findById(id).select("-password");
+  if (!result) {
+    throw new Error("user is not fuound ");
+  }
+  return result;
+};
+const getAllUserForDb = async () => {
+  const result = await User.find({}).select("-password");
+  return result;
 };
 
 export const userService = {
   createUserForDb,
   loginUserForDb,
+  getSingleUserForDb,
+  getAllUserForDb,
 };

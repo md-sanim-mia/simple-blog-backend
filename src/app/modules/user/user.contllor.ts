@@ -19,8 +19,29 @@ const loginUser = asyncCatch(async (req, res) => {
     data: result,
   });
 });
+const getAllUsers = asyncCatch(async (req, res) => {
+  const result = await userService.getAllUserForDb();
+
+  res.status(200).json({
+    success: true,
+    message: "user success fully find",
+    data: result,
+  });
+});
+const getSingleUser = asyncCatch(async (req, res) => {
+  const { userId } = req.params;
+  const result = await userService.getSingleUserForDb(userId);
+
+  res.status(200).json({
+    success: true,
+    message: "get success fullu single user ",
+    data: result,
+  });
+});
 
 export const userContllors = {
   createUser,
   loginUser,
+  getAllUsers,
+  getSingleUser,
 };

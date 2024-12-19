@@ -6,5 +6,7 @@ const port = 5000;
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1", router);
-app.get("/", async (req: Request, res: Response) => {});
+app.get("/", async (req: Request, res: Response) => {
+  res.json("blogs app server ");
+});
 export default app;
