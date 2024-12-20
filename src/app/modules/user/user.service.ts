@@ -1,6 +1,8 @@
+import config from "../../config";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 const createUserForDb = async (playood: TUser) => {
   const isUserExits = await User.findOne({ email: playood.email });
 
@@ -37,10 +39,15 @@ const loginUserForDb = async (playood: Partial<TUser>) => {
   if (!comperPassword) {
     throw new Error("invilid email and password please try agin");
   }
-  const result = await User.findOne({ email: playood.email }).select(
-    "email name"
+  const token = jwt.sign(
+    { email: isUserExits.email, role: isUserExits.role },
+    config.jwt_scrict as string,
+    {
+      expiresIn: "3d",
+    }
   );
-  return result;
+
+  return { token };
 };
 
 const getSingleUserForDb = async (id: string) => {

@@ -1,3 +1,4 @@
+import queryBuilder from "../../builder/query.builder";
 import { TBlogs } from "./blogs.interface";
 import { Blogs } from "./blogs.model";
 
@@ -5,8 +6,13 @@ const createBlogForDb = async (playood: TBlogs) => {
   const result = await Blogs.create(playood);
   return result;
 };
-const getAllBlogsForDb = async () => {
-  const result = await Blogs.find({});
+const getAllBlogsForDb = async (query: Record<string, unknown>) => {
+  const blogQuerys = new queryBuilder(Blogs.find().populate("author"), query)
+    .search(["title"])
+    .filter()
+    .sort()
+    .sortOrder();
+  const result = await blogQuerys.modelQuery;
   return result;
 };
 const getSingleBlogForDb = async (id: string) => {

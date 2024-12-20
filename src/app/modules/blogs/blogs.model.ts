@@ -5,7 +5,7 @@ const blogsSchema = new Schema<TBlogs>(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
-    author: { type: Schema.Types.ObjectId, required: true },
+    author: { type: Schema.Types.ObjectId, ref: "Users", required: false },
     isPublished: { type: Boolean, default: true },
   },
   {

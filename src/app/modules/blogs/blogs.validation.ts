@@ -4,7 +4,7 @@ const createBlogValidationSchema = z.object({
   body: z.object({
     title: z.string({ required_error: "title is required" }),
     content: z.string({ required_error: "content is required" }),
-    author: z.string({ required_error: "author is required" }),
+    author: z.string({ required_error: "author is required" }).optional(),
   }),
 });
 const updateBlogValidationSchema = z.object({

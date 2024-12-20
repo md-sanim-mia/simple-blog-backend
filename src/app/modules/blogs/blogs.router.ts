@@ -2,6 +2,7 @@ import express from "express";
 import { validationRequest } from "../../middlwares/validationRequest";
 import { blogsValidation } from "./blogs.validation";
 import { blogsContllors } from "./blogs.contllor";
+import auth from "../../middlwares/auth";
 
 const router = express.Router();
 router.post(
@@ -10,12 +11,12 @@ router.post(
   blogsContllors.createBlog
 );
 
-router.get("/", blogsContllors.getAllBlogs);
+router.get("/", auth("user"), blogsContllors.getAllBlogs);
 router.get("/:blogId", blogsContllors.getSingleBlog);
 router.patch(
   "/:blogId",
   validationRequest(blogsValidation.updateBlogValidationSchema),
-  blogsContllors.getAllBlogs
+  blogsContllors.updateSingleBlog
 );
 router.delete("/:blogId", blogsContllors.deletedSingleBlog);
 

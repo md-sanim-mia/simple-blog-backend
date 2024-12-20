@@ -10,7 +10,7 @@ const createBlog = asyncCatch(async (req, res) => {
   });
 });
 const getAllBlogs = asyncCatch(async (req, res) => {
-  const result = await blogsService.getAllBlogsForDb();
+  const result = await blogsService.getAllBlogsForDb(req?.query);
   res.status(200).json({
     success: true,
     message: "get  all blogs",
@@ -42,7 +42,7 @@ const deletedSingleBlog = asyncCatch(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "deleted single blog ",
-    data: result,
+    data: "",
   });
 });
 
