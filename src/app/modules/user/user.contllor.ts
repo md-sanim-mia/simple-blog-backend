@@ -38,7 +38,6 @@ const getSingleUser = asyncCatch(async (req, res) => {
     data: result,
   });
 });
-
 export const userContllors = {
   createUser,
   loginUser,

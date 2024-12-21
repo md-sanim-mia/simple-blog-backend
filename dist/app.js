@@ -15,10 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const routers_1 = __importDefault(require("./app/routers"));
+const gogbalerrorhandiler_1 = __importDefault(require("./app/middlwares/gogbalerrorhandiler"));
+const notFound_1 = __importDefault(require("./app/middlwares/notFound"));
 const app = (0, express_1.default)();
 const port = 5000;
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-app.use("/api/v1", routers_1.default);
-app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
+app.use("/api", routers_1.default);
+app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.json("blogs app server ");
+}));
+app.use(gogbalerrorhandiler_1.default);
+app.use(notFound_1.default);
 exports.default = app;

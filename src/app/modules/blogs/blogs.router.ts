@@ -8,16 +8,18 @@ const router = express.Router();
 router.post(
   "/",
   validationRequest(blogsValidation.createBlogValidationSchema),
+  auth("user"),
   blogsContllors.createBlog
 );
 
-router.get("/", auth("user"), blogsContllors.getAllBlogs);
-router.get("/:blogId", blogsContllors.getSingleBlog);
+router.get("/", blogsContllors.getAllBlogs);
+router.get("/:id", blogsContllors.getSingleBlog);
 router.patch(
-  "/:blogId",
+  "/:id",
   validationRequest(blogsValidation.updateBlogValidationSchema),
+  auth("user"),
   blogsContllors.updateSingleBlog
 );
-router.delete("/:blogId", blogsContllors.deletedSingleBlog);
+router.delete("/:id", auth("user"), blogsContllors.deletedSingleBlog);
 
 export const blogRouter = router;

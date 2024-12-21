@@ -1,4 +1,6 @@
+import { StatusCodes } from "http-status-codes";
 import config from "../../config";
+import { AppError } from "../../Error/AppError";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import bcrypt from "bcrypt";
@@ -23,13 +25,13 @@ const loginUserForDb = async (playood: Partial<TUser>) => {
   );
 
   if (!isUserExits) {
-    throw new Error("user is not found for db");
+    throw new AppError(StatusCodes.NOT_FOUND, "user is not found for db");
   }
   //chcek user stauts----
 
   const checkUserStatus = isUserExits?.isBlocked;
   if (checkUserStatus) {
-    throw new Error("this user is blocked");
+    throw new AppError(StatusCodes.BAD_REQUEST, "this user is blocked");
   }
   // comper current passwrod and database user password
   const comperPassword = await bcrypt.compare(
@@ -37,7 +39,10 @@ const loginUserForDb = async (playood: Partial<TUser>) => {
     isUserExits.password
   );
   if (!comperPassword) {
-    throw new Error("invilid email and password please try agin");
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "invilid email and password please try agin"
+    );
   }
   const token = jwt.sign(
     { email: isUserExits.email, role: isUserExits.role },
@@ -58,7 +63,7 @@ const getSingleUserForDb = async (id: string) => {
   return result;
 };
 const getAllUserForDb = async () => {
-  const result = await User.find({}).select("-password");
+  const result = await User.find({});
   return result;
 };
 

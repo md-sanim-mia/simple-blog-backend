@@ -1,8 +1,13 @@
 import { asyncCatch } from "../../utility/asyncCatch";
+import { TUser } from "../user/user.interface";
 import { blogsService } from "./blogs.service";
 
 const createBlog = asyncCatch(async (req, res) => {
-  const result = await blogsService.createBlogForDb(req.body);
+  const user = req.user;
+  const result = await blogsService.createBlogForDb(
+    req.body,
+    user as Partial<TUser>
+  );
   res.status(200).json({
     success: true,
     message: "blogs success fully created",
@@ -18,8 +23,8 @@ const getAllBlogs = asyncCatch(async (req, res) => {
   });
 });
 const getSingleBlog = asyncCatch(async (req, res) => {
-  const { blogId } = req.params;
-  const result = await blogsService.getSingleBlogForDb(blogId);
+  const { id } = req.params;
+  const result = await blogsService.getSingleBlogForDb(id);
   res.status(200).json({
     success: true,
     message: "get single blog",
@@ -27,9 +32,9 @@ const getSingleBlog = asyncCatch(async (req, res) => {
   });
 });
 const updateSingleBlog = asyncCatch(async (req, res) => {
-  const { blogId } = req.params;
+  const { id } = req.params;
   const playood = req.body;
-  const result = await blogsService.updateSingleBlogForDb(blogId, playood);
+  const result = await blogsService.updateSingleBlogForDb(id, playood);
   res.status(200).json({
     success: true,
     message: "update single blog",
@@ -37,12 +42,11 @@ const updateSingleBlog = asyncCatch(async (req, res) => {
   });
 });
 const deletedSingleBlog = asyncCatch(async (req, res) => {
-  const { blogId } = req.params;
-  const result = await blogsService.deletedSingleBlogForDb(blogId);
+  const { id } = req.params;
+  const result = await blogsService.deletedSingleBlogForDb(id);
   res.status(200).json({
     success: true,
-    message: "deleted single blog ",
-    data: "",
+    message: "Blog deleted successfully",
   });
 });
 

@@ -2,6 +2,7 @@ import express from "express";
 import { userContllors } from "./user.contllor";
 import { validationRequest } from "../../middlwares/validationRequest";
 import { userValidations } from "./user.validation";
+import auth from "../../middlwares/auth";
 
 const router = express.Router();
 router.post(
@@ -14,7 +15,5 @@ router.post(
   validationRequest(userValidations.loginUserValidationSchema),
   userContllors.loginUser
 );
-router.get("/", userContllors.getAllUsers);
-router.get("/:userId", userContllors.getSingleUser);
 
 export const userRouter = router;

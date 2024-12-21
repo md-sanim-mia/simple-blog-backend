@@ -28,7 +28,26 @@ const loginUser = (0, asyncCatch_1.asyncCatch)((req, res) => __awaiter(void 0, v
         data: result,
     });
 }));
+const getAllUsers = (0, asyncCatch_1.asyncCatch)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.userService.getAllUserForDb();
+    res.status(200).json({
+        success: true,
+        message: "user success fully find",
+        data: result,
+    });
+}));
+const getSingleUser = (0, asyncCatch_1.asyncCatch)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    const result = yield user_service_1.userService.getSingleUserForDb(userId);
+    res.status(200).json({
+        success: true,
+        message: "get success fullu single user ",
+        data: result,
+    });
+}));
 exports.userContllors = {
     createUser,
     loginUser,
+    getAllUsers,
+    getSingleUser,
 };
